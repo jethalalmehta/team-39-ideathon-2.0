@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-serif: 'DM Serif Display', Georgia, serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #fcf8ff;
+    color: #1c1a28;
+    overflow-x: hidden;
+  }
+}
+
+.font-serif-display {
+  font-family: 'DM Serif Display', Georgia, serif;
+}
+
+.font-mono-code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Custom GPU-accelerated cursor glow (no layout reflows) */
+.cursor-glow-dot {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(169, 161, 214, 0.22) 0%, rgba(199, 191, 234, 0.08) 45%, transparent 70%);
+  will-change: transform;
+  transform: translate3d(var(--glow-x, -500px), var(--glow-y, -500px), 0) translate(-50%, -50%);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+/* Page Transition animation */
+.nexora-page-transition {
+  animation: nexoraPageEnter 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+}
+
+@keyframes nexoraPageEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Modal and Overlay Keyframes */
+@keyframes nexoraModalBackdrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nexoraModalDialog {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scale(0.975);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.nexora-modal-backdrop {
+  animation: nexoraModalBackdrop 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.nexora-modal-dialog {
+  animation: nexoraModalDialog 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+}
+
+/* Toast entrance */
+@keyframes nexoraToastIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.nexora-toast-enter {
+  animation: nexoraToastIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+}
+
+/* Card hover lift & press feedback */
+.nexora-card-lift {
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.18s ease,
+              background-color 0.15s ease;
+  will-change: transform;
+}
+
+.nexora-card-lift:hover {
+  transform: translate3d(0, -2px, 0);
+  box-shadow: 0 8px 24px -4px rgba(98, 87, 165, 0.12);
+}
+
+.nexora-card-lift:active {
+  transform: translate3d(0, 0, 0) scale(0.996);
+}
+
+/* Button micro-interaction feedback */
+.nexora-btn-press {
+  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.15s ease,
+              box-shadow 0.15s ease,
+              border-color 0.15s ease;
+  will-change: transform;
+}
+
+.nexora-btn-press:active {
+  transform: scale(0.97);
+}
+
+/* Accessible interactive focus */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex="0"]:focus-visible {
+  outline: 2px solid #7568D8;
+  outline-offset: 2px;
+}
+
+/* Clean Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1c8ff;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #968dc8;
+}
+
+/* Accessibility: respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .cursor-glow-dot {
+    display: none !important;
+  }
+
+  .nexora-card-lift:hover,
+  .nexora-card-lift:active,
+  .nexora-btn-press:active {
+    transform: none !important;
+  }
+}
